@@ -1,19 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const http = require('http');
+const app = require('./app/app');
 
-const app = express();
-
-app.use([cors(), express.json()]);
-
-app.get('/health', (req, res) => {
-    res.status(200).json({
-        message: 'Server is running smoothly...'
-    })
-});
+const server = http.createServer(app);
 
 const port = process.env.PORT || 8000;
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server is running on PORT: ${port}`);
 });
