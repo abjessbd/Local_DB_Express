@@ -1,6 +1,7 @@
 const usersRoute = require('express').Router();
-const { signUp } = require('../../handlers/usersHandler/usersHandler');
+const { createUser, getUsers } = require('../../handlers/usersHandler/usersHandler');
 
-usersRoute.post('/users/signUp', signUp)
+usersRoute.post('/users/createUser', createUser);
+usersRoute.get('/users/getUsers', getUsers);
 
 module.exports = usersRoute;
