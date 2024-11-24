@@ -2,6 +2,17 @@ const User = require("../../models/User");
 const { readFile, writeFile } = require('../../utils/utils');
 const shortid = require('shortid');
 
+const deleteUser = async (req, res, _next) => {
+    const id = req.params.id;
+    const users = await readFile();
+
+    const usersAfterDeleted = users.filter(user => user.id !== id);
+
+    await writeFile(usersAfterDeleted);
+
+    res.status(201).json({ message: "User is deleted successfully!!!" })
+};
+
 const updateUserByPut = async (req, res, _next) => {
     const id = req.params.id;
     const users = await readFile();
@@ -75,4 +86,4 @@ const getUsers = async (_req, res, _next) => {
     res.status(201).send(users);
 };
 
-module.exports = { createUser, getUsers, findOneUser, updateUserByPatch, updateUserByPut };
+module.exports = { createUser, getUsers, findOneUser, updateUserByPatch, updateUserByPut, deleteUser };
