@@ -1,5 +1,30 @@
 const User = require("../../models/User");
 const { readFile, writeFile } = require('../../utils/utils');
+const shortid = require('shortid');
+
+const updateUserByPut = async (req, res, _next) => {
+    const id = req.params.id;
+    const users = await readFile();
+
+    let user = users.find(user => user.id === id);
+
+    if (!user) {
+        user = {
+            id: shortid.generate(),
+            ...req.body,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        };
+        users.push(user);
+    }
+
+    user.name = req.body.name;
+    user.username = req.body.username;
+    user.password = req.body.password;
+
+    await writeFile(users);
+    res.status(201).send(user);
+};
 
 const updateUserByPatch = async (req, res, _next) => {
     const id = req.params.id;
@@ -50,4 +75,4 @@ const getUsers = async (_req, res, _next) => {
     res.status(201).send(users);
 };
 
-module.exports = { createUser, getUsers, findOneUser, updateUserByPatch };
+module.exports = { createUser, getUsers, findOneUser, updateUserByPatch, updateUserByPut };
